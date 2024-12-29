@@ -33,7 +33,8 @@ kbd {
 }
 
 .playing {
-    transform: scale(1.5);
+    transform: scale(1.25);
     border-color: #ffc600;
     box-shadow: 0 0 1rem #ffc600;
+    color: #ffc600;
 }

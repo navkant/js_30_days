@@ -21,11 +21,16 @@ function updateButton(e) {
     toggle.textContent = icon;
 }
 
-function skip() {
-    video.currentTime += parseFloat(this.dataset.skip);
+function skip(skipTime = null) {
+    if (!skipTime) {
+        video.currentTime += parseFloat(this.dataset.skip);
+    } else {
+        video.currentTime += skipTime;
+    }
 }
 
 function handleRangeUpdate(e) {
+    console.log(this.name);
     video[this.name] = this.value;
 }
 
@@ -37,6 +42,32 @@ function handleProgress() {
 function handleScrub(e) {
     const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
     video.currentTime = scrubTime;
+}
+
+function setVolume(increase) {
+    if (increase) {
+        if (video.volume < 1) {
+            console.log("increasing volume");
+            video.volume += 0.05;
+        }
+    } else {
+        if (video.volume > 0.05) {
+            console.log("decreasing volume");
+            video.volume -= 0.05;
+        }
+    }
+}
+
+function handleArrowKeys(e) {
+    if (e.key === "ArrowLeft") {
+        skip(-10);
+    } else if (e.key === "ArrowRight") {
+        skip(10);
+    } else if (e.key === "ArrowUp") {
+        setVolume(true);
+    } else if (e.key === "ArrowDown") {
+        setVolume(false);
+    }
 }
 
 // Hook up the evnet listeners
@@ -52,3 +83,4 @@ ranges.forEach((range) =>
 );
 
 progress.addEventListener("click", handleScrub);
+window.addEventListener("keydown", handleArrowKeys);
